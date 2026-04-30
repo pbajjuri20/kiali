@@ -95,8 +95,12 @@ func TestListOrGetResources_InvalidNamespace(t *testing.T) {
 		"namespaces":   "nonexistent-ns-12345",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	assert.Contains(t, resp.Parsed, "errors")
+	assert.Equal(t, http.StatusNotFound, resp.StatusCode)
+	require.Contains(t, resp.Parsed, "error")
+	errMsg, ok := resp.Parsed["error"].(string)
+	require.True(t, ok)
+	assert.Contains(t, errMsg, "nonexistent-ns-12345")
+	assert.Contains(t, errMsg, "not found or not accessible")
 }
 
 func TestListOrGetResources_ResourceNameRequiresNamespace(t *testing.T) {
