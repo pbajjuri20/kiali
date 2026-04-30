@@ -554,9 +554,9 @@ if [ "${TEST_SUITE}" == "${BACKEND}" ]; then
   if [ "${MCP_TOOLS}" == "true" ]; then
     echo "Running backend MCP integration tests"
     ensureBookinfoGraphReady
-    # Must cd in this shell (not `cd ... | tee` — a pipeline runs cd in a subshell, so the next go test would run in the wrong directory).
-    cd "${SCRIPT_DIR}"/../tests/integration/mcp_tools/ || exit 1
-    go test -tags exclude_frontend -v -failfast -coverpkg=github.com/kiali/kiali/... -coverprofile=coverage-mcp.out 2>&1 | tee >(go-junit-report > ../junit-rest-report-mcp-tools.xml) ../int-test-mcp-tools.log
+    # Run from repo root with explicit package path (same behavior as cd mcp_tools; avoids fragile cwd + relative paths).
+    cd "${SCRIPT_DIR}"/.. || exit 1
+    go test -tags exclude_frontend -v -failfast -coverpkg=github.com/kiali/kiali/... -coverprofile=tests/integration/mcp_tools/coverage-mcp.out ./tests/integration/mcp_tools/ 2>&1 | tee >(go-junit-report > tests/integration/junit-rest-report-mcp-tools.xml) tests/integration/int-test-mcp-tools.log
 
   else
     # Run backend integration tests
