@@ -1,6 +1,7 @@
 package mcp_tools
 
 import (
+	"encoding/json"
 	"net/http"
 	"testing"
 
@@ -8,10 +9,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func readMCPJSONStringBody(t *testing.T, resp *MCPResponse) string {
+	t.Helper()
+	var s string
+	require.NoError(t, json.Unmarshal(resp.Body, &s), "body=%q", resp.Body)
+	return s
+}
+
 func TestManageIstioConfigRead_MissingAction(t *testing.T) {
 	resp, err := CallMCPTool("manage_istio_config_read", map[string]interface{}{})
 	require.NoError(t, err)
-	assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	msg := readMCPJSONStringBody(t, resp)
+	assert.Contains(t, msg, "invalid action")
+	assert.Contains(t, msg, "list, get")
 }
 
 func TestManageIstioConfigRead_InvalidAction(t *testing.T) {
@@ -19,7 +30,10 @@ func TestManageIstioConfigRead_InvalidAction(t *testing.T) {
 		"action": "invalid",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	msg := readMCPJSONStringBody(t, resp)
+	assert.Contains(t, msg, "invalid action")
+	assert.Contains(t, msg, "invalid")
 }
 
 func TestManageIstioConfigRead_ValidActions(t *testing.T) {
@@ -46,7 +60,8 @@ func TestManageIstioConfigRead_GetMissingParams(t *testing.T) {
 		"action": "get",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	assert.Contains(t, readMCPJSONStringBody(t, resp), "namespace is required")
 }
 
 func TestManageIstioConfigRead_WriteActionsRejected(t *testing.T) {
@@ -56,7 +71,10 @@ func TestManageIstioConfigRead_WriteActionsRejected(t *testing.T) {
 				"action": action,
 			})
 			require.NoError(t, err)
-			assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
+			assert.Equal(t, http.StatusOK, resp.StatusCode)
+			msg := readMCPJSONStringBody(t, resp)
+			assert.Contains(t, msg, "invalid action")
+			assert.Contains(t, msg, action)
 		})
 	}
 }
