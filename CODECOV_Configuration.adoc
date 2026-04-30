@@ -5,10 +5,11 @@ This repository uploads merged Go coverage from GitHub Actions to Codecov (see `
 
 == What CI uploads
 
-Coverage is merged from three artifacts produced elsewhere in the same workflow run:
+Coverage is merged from four artifacts produced elsewhere in the same workflow run:
 
 * `coverage-unit` — unit tests (`.github/workflows/test-lint-backend.yml`)
 * `coverage-backend` — backend integration (`.github/workflows/integration-tests-backend.yml`)
+* `coverage-mcp` — MCP tools integration (`.github/workflows/integration-tests-backend-mcp.yml`)
 * `coverage-multicluster` — external control plane integration (`.github/workflows/integration-tests-backend-multicluster-external-controlplane.yml`)
 
 Behavior is configured in `codecov.yml` (paths, ignores, patch/project gates).

@@ -91,4 +91,9 @@ jobs:
         name: backend-test-metadata-mcp-tools
         path: test-metadata-mcp-tools/
 
+    - name: Upload MCP backend coverage artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-mcp
+        path: tests/integration/mcp_tools/coverage-mcp.out
 

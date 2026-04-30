@@ -232,6 +232,7 @@ jobs:
     name: Merge & Upload Coverage to Codecov
     needs:
       - integration_tests_backend
+      - integration_tests_backend_mcp
       - integration_tests_backend_multicluster_external_controlplane
       - test_backend
     permissions:
@@ -256,7 +257,13 @@ jobs:
         with:
           name: coverage-multicluster
           path: coverage
-      
+
+      - name: Download MCP backend coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-mcp
+          path: coverage
+
       - name: Download unit coverage
         uses: actions/download-artifact@v4
         with:
@@ -272,6 +279,7 @@ jobs:
           grep -h -v "^mode:" coverage/coverage-unit.out >> coverage.out
           grep -h -v "^mode:" coverage/coverage-backend.out >> coverage.out
           grep -h -v "^mode:" coverage/coverage-multicluster.out >> coverage.out
+          grep -h -v "^mode:" coverage/coverage-mcp.out >> coverage.out
 
       # -------------------------------
       # Upload to Codecov
