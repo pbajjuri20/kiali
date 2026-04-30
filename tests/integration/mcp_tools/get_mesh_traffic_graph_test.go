@@ -1,7 +1,6 @@
 package mcp_tools
 
 import (
-	"encoding/json"
 	"net/http"
 	"testing"
 
@@ -12,7 +11,7 @@ import (
 func TestGetMeshTrafficGraph_MissingNamespaces(t *testing.T) {
 	resp, err := CallMCPTool("get_mesh_traffic_graph", map[string]interface{}{})
 	require.NoError(t, err)
-	assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
+	assert.Equal(t, http.StatusForbidden, resp.StatusCode)
 }
 
 func TestGetMeshTrafficGraph_ValidNamespace(t *testing.T) {
