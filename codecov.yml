@@ -24,19 +24,19 @@ fixes:
   - "github.com/kiali/kiali/::"
   - "/home/runner/work/kiali/kiali/::"
 
-ignore:
-  # Exclude frontend UI code (since this is for the backend)
-  - "frontend/**"
+# ignore:
+#   # Exclude frontend UI code (since this is for the backend)
+#   - "frontend/**"
   
-  # Build, development, and deployment tools
-  - "hack/**"
-  - "make/**"
-  - "tools/**"
-  - "deploy/**"
+#   # Build, development, and deployment tools
+#   - "hack/**"
+#   - "make/**"
+#   - "tools/**"
+#   - "deploy/**"
   
-  # Documentation and designs
-  - "design/**"
+#   # Documentation and designs
+#   - "design/**"
   
-  # Test utilities, E2E tests, and mock directories
-  - "**/test/**"
-  - "**/*_test.go"
+#   # Test utilities, E2E tests, and mock directories
+#   - "**/test/**"
+#   - "**/*_test.go"
