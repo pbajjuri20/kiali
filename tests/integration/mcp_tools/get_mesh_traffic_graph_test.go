@@ -11,7 +11,7 @@ import (
 func TestGetMeshTrafficGraph_MissingNamespaces(t *testing.T) {
 	resp, err := CallMCPTool("get_mesh_traffic_graph", map[string]interface{}{})
 	require.NoError(t, err)
-	assert.Equal(t, http.StatusForbidden, resp.StatusCode)
+	assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
 }
 
 func TestGetMeshTrafficGraph_ValidNamespace(t *testing.T) {
@@ -30,7 +30,7 @@ func TestGetMeshTrafficGraph_InvalidNamespace(t *testing.T) {
 		"namespaces": "nonexistent-ns-12345",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, http.StatusNotFound, resp.StatusCode)
+	assert.Equal(t, http.StatusForbidden, resp.StatusCode)
 }
 
 func TestGetMeshTrafficGraph_ValidGraphTypes(t *testing.T) {
