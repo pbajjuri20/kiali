@@ -285,3 +285,5 @@ jobs:
           slug: kiali/kiali
           token: ${{ secrets.CODECOV_TOKEN }}
           use_oidc: true
+          commit: ${{ github.sha }}
+          branch: ${{ github.ref_name }}
